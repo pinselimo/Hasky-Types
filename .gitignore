@@ -1,0 +1,9 @@
+*.o
+*.hi
+dist*
+.ghc*
+stack.yaml.lock
+.stack*
+*.h
+*.so
+
