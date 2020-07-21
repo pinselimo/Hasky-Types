@@ -1,0 +1,67 @@
+Name: Hasky-Types
+Version: 0.1.0.1
+Cabal-Version: >= 1.10
+License: MIT
+License-file: LICENSE
+Author: Simon Plakolb
+Homepage: https://github.com/pinselimo/Hasky-Types
+Synopsis: Haskell types for easy FFI with nested data.
+Description:
+    The types included in HaskyTypes make it easy to use nested data in an FFI context. Its inteded
+    use is for the Python library Hasky, but the types can be useful in many languages.
+
+    Lists can be packed inside an Array (which contains its length) or a linked list called List.
+    Tuples with up to four fields can be packed into a C struct provided by Foreign.C.Structs.
+    And finally a String type is provided storing a pointer to a string of wchars. This is necessary
+    to realize freeing capability for C strings in Python.
+    On that note: Functions for freeing each of the outlined types are included as well.
+Maintainer: s.plakolb@gmail.com
+Copyright: (c) 2020 Simon Plakolb
+Category: foreign, data
+Build-Type: Simple
+Extra-Source-Files:
+    README.md,
+    CHANGELOG.md
+Tested-With: GHC==8.10.1, GHC==8.8.3, GHC==8.6.5, GHC==8.4.4, GHC==8.2.2, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4, GHC==7.6.3, GHC==7.4.2, GHC==7.2.2, GHC==7.0.4
+
+Source-Repository   head
+    type:     git
+    location: https://github.com/pinselimo/Hasky-Types
+
+Library
+    Default-Language: Haskell2010
+    Exposed-Modules:
+        Foreign.Hasky.Array
+        Foreign.Hasky.List
+        Foreign.Hasky.String
+        Foreign.Hasky.Tuples
+    hs-source-dirs: src
+    Build-Depends:  base        >= 4.0 && < 5.0,
+                    C-structs   >= 0.1 && < 0.2
+
+Test-Suite unit-tests
+    Default-Language: Haskell2010
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    Other-Modules:
+        TypeProperties
+    hs-source-dirs: test
+    build-depends:
+        HaskyTypes,
+        base         >= 4.0 && < 5.0,
+        C-structs    >= 0.1 && < 0.2,
+        HUnit        >= 1.2 && < 1.7,
+        QuickCheck   >= 2.7 && < 2.15,
+        tasty        >= 1.0 && < 1.4,
+        tasty-quickcheck >= 0.10 && < 0.11
+
+Test-Suite doctest
+    Default-Language: Haskell2010
+    type: exitcode-stdio-1.0
+    main-is: DocTest.hs
+    hs-source-dirs: test
+    build-depends:
+        base        >= 4.0 && < 5.0,
+        doctest     >= 0.10 && < 0.18,
+        Glob        >= 0.8 && < 0.11
+
