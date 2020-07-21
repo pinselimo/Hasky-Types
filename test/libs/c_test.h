@@ -20,12 +20,12 @@ struct CListDouble {
     double value;
     struct CListDouble *next;
 };
-
+*/
 struct CListInt {
     int value;
     struct CListInt *next;
 };
-
+/*
 struct CListFloat {
     float value;
     struct CListFloat *next;
@@ -34,9 +34,9 @@ struct CListFloat {
 struct CArrayDouble *arrayDouble(void);
 struct CArrayInt    *arrayInt(void);
 struct CArrayFloat  *arrayFloat(void);
-/*
-struct CListDouble *listDouble(void);
+
+// struct CListDouble *listDouble(void);
 struct CListInt    *listInt(void);
-struct CListFloat  *listFloat(void);
-*/
+// struct CListFloat  *listFloat(void);
+
 #endif // C_TEST

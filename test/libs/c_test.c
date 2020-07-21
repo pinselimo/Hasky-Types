@@ -62,21 +62,21 @@ struct CListDouble *listDouble (void) {
     }
     return init;
 }
-
+*/
 struct CListInt *listInt (void) {
     struct CListInt *init;
-    init = malloc (sizeof (struct CListInt));
+    init = (struct CListInt *) malloc (sizeof (struct CListInt));
 
     struct CListInt *elem = init;
     elem->value = 0;
     for (int i = 1; i < 42; i++) {
-        elem->next = malloc (sizeof (struct CListInt));
+        elem->next = (struct CListInt *) malloc (sizeof (struct CListInt));
         elem = elem->next;
         elem->value = i;
     }
     return init;
 }
-
+/*
 struct CListFloat *listFloat (void) {
     struct CListFloat *init;
     init = malloc (sizeof (struct CListFloat));
