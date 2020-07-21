@@ -11,7 +11,8 @@ main = defaultMain $ testGroup "Tasty" [
 --                   when doing the CTest.tests.
 --                   SMH it works in the Foreig.C.Types package but not in
 --                   this one, which could be due to the bigger allocations.
---                   Checkout the "travisctests" branch for details.
---                   , CTest.tests
+--
+--                   This branch is intended to test out different options.
+                   , CTest.tests
                    ]
 

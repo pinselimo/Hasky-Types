@@ -15,7 +15,7 @@ struct CArrayFloat {
     int length;
     float *array;
 };
-
+/*
 struct CListDouble {
     double value;
     struct CListDouble *next;
@@ -30,13 +30,13 @@ struct CListFloat {
     float value;
     struct CListFloat *next;
 };
-
+*/
 struct CArrayDouble *arrayDouble(void);
 struct CArrayInt    *arrayInt(void);
 struct CArrayFloat  *arrayFloat(void);
-
+/*
 struct CListDouble *listDouble(void);
 struct CListInt    *listInt(void);
 struct CListFloat  *listFloat(void);
-
+*/
 #endif // C_TEST

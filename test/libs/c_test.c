@@ -41,7 +41,7 @@ struct CArrayFloat *arrayFloat (void) {
     }
     return a;
 }
-
+/*
 struct CListDouble *listDouble (void) {
     struct CListDouble *init;
     init = malloc (sizeof (struct CListDouble));
@@ -90,4 +90,4 @@ struct CListFloat *listFloat (void) {
     }
     return init;
 }
-
+*/
