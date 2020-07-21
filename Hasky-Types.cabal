@@ -7,13 +7,10 @@ Author: Simon Plakolb
 Homepage: https://github.com/pinselimo/Hasky-Types
 Synopsis: Haskell types for easy FFI with nested data.
 Description:
-    The types included in HaskyTypes make it easy to use nested data in an FFI context. Its inteded
-    use is for the Python library Hasky, but the types can be useful in many languages.
-
+    The types included in HaskyTypes make it easy to use nested data in an FFI context. Its inteded use is for the Python library Hasky, but the types can be useful in many languages.
     Lists can be packed inside an Array (which contains its length) or a linked list called List.
     Tuples with up to four fields can be packed into a C struct provided by Foreign.C.Structs.
-    And finally a String type is provided storing a pointer to a string of wchars. This is necessary
-    to realize freeing capability for C strings in Python.
+    And finally a String type is provided storing a pointer to a string of wchars. This is necessary to realize freeing capability for C strings in Python.
     On that note: Functions for freeing each of the outlined types are included as well.
 Maintainer: s.plakolb@gmail.com
 Copyright: (c) 2020 Simon Plakolb
@@ -47,7 +44,7 @@ Test-Suite unit-tests
         TypeProperties
     hs-source-dirs: test
     build-depends:
-        HaskyTypes,
+        Hasky-Types,
         base         >= 4.0 && < 5.0,
         C-structs    >= 0.1 && < 0.2,
         HUnit        >= 1.2 && < 1.7,
