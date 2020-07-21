@@ -26,11 +26,23 @@ doubles = take 63 fibs :: [CDouble]
 ints = [0..41] :: [CInt]
 floats = map (/2.0) [0..20] :: [CFloat]
 
+pfa :: Storable a => CArray a -> IO [a]
+pfa arr = do
+    l <- peekArray arr
+    freeArray arr
+    return l
+
+pfl :: Storable a => CList a -> IO [a]
+pfl list = do
+    l <- peekList list
+    freeList list
+    return l
+
 tests = testGroup "Foreign Imports" [
-        testCase "arrayDouble" $ (quick $ peekArray arrayDouble) @?= doubles,
-        testCase "arrayInt"    $ (quick $ peekArray arrayInt)    @?= ints,
-        testCase "arrayFloat"  $ (quick $ peekArray arrayFloat)  @?= floats,
-        testCase "listDouble"  $ (quick $ peekList listDouble)   @?= doubles,
-        testCase "listInt"     $ (quick $ peekList listInt)      @?= ints,
-        testCase "listFloat"   $ (quick $ peekList listFloat )   @?= floats
+        testCase "arrayDouble" $ (quick $ pfa arrayDouble) @?= doubles,
+        testCase "arrayInt"    $ (quick $ pfa arrayInt)    @?= ints,
+        testCase "arrayFloat"  $ (quick $ pfa arrayFloat)  @?= floats,
+        testCase "listDouble"  $ (quick $ pfl listDouble)   @?= doubles,
+        testCase "listInt"     $ (quick $ pfl listInt)      @?= ints,
+        testCase "listFloat"   $ (quick $ pfl listFloat )   @?= floats
     ]
