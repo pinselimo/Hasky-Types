@@ -17,11 +17,10 @@ quick = unsafePerformIO
 foreign import ccall "arrayDouble" arrayDouble :: CArray CDouble
 foreign import ccall "arrayInt" arrayInt :: CArray CInt
 foreign import ccall "arrayFloat" arrayFloat :: CArray CFloat
-{-
-foreign import ccall "listDouble" listDouble :: CList CDouble
+
+-- foreign import ccall "listDouble" listDouble :: CList CDouble
 foreign import ccall "listInt" listInt :: CList CInt
-foreign import ccall "listFloat" listFloat :: CList CFloat
--}
+-- foreign import ccall "listFloat" listFloat :: CList CFloat
 
 fibs = 1.0 : 2.0 : zipWith (+) fibs (tail fibs) :: [CDouble]
 doubles = take 63 fibs :: [CDouble]
@@ -45,6 +44,6 @@ tests = testGroup "Foreign Imports" [
       , testCase "arrayInt"    $ (quick $ pfa arrayInt)    @?= ints
       , testCase "arrayFloat"  $ (quick $ pfa arrayFloat)  @?= floats
 --      , testCase "listDouble"  $ (quick $ pfl listDouble)   @?= doubles
---      , testCase "listInt"     $ (quick $ pfl listInt)      @?= ints
+      , testCase "listInt"     $ (quick $ pfl listInt)      @?= ints
 --      , testCase "listFloat"   $ (quick $ pfl listFloat )   @?= floats
    ]
