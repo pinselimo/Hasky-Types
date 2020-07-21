@@ -1,53 +1,134 @@
-# C-Structs in Haskell
 
-This repository is part of the development of [```Hasky```](https://github.com/pinselimo/Hasky/). It defines types for ```C``` ```struct```s in ```Haskell``` and their instance declarations as Storable.
+[![Build](https://img.shields.io/travis/pinselimo/Hasky-Types.svg)](https://travis-ci.org/pinselimo/Hasky-Types)
 
-## Usage
+# Hasky-Types
 
-You can use these types as a classic ```hackage``` package. It has no other dependencies than some of the ```Foreign.*``` modules contained in the standard library of ```GHC```.
+This repository is part of the development of [```Hasky```](https://github.com/pinselimo/Hasky/). It defines types for 
+
+## Dependencies
+
+You can use these types as a classic ```hackage``` package. It has no other dependencies than some of the ```Foreign.*``` modules contained in the standard library of ```GHC``` and the [C-structs](https://github.com/pinselimo/cstructs-in-haskell) package.
+
+### CArray
 
 ~~~haskell
-λ> import Foreign.C.Structs
-λ> s = Struct2 1 2 :: Struct2 Int Int
+λ> import Foreign.Hasky.Array (CArray, newArray, peekArray, freeArray)
+λ> arr <- newArray $ map (*2) [1..5]
+λ> peekArray arr
+[2.0,4.0,6.0,8.0,10.0]
+λ> freeArray arr
 ~~~
 
-can be interpreted as an equivalent to:
+CArray is a type synonym for a pointer to the Struct containing the data. The Haskell code above can be interpreted as quasi equivalent to:
 
 ~~~C
-struct Struct2 {
-    int s2fst;
-    int s2snd;
+struct CArray {
+    int length;
+    double* array;
 };
 
-struct Struct2 s;
-s.s2fst = 1;
-s.s2snd = 2;
+struct CArray *arr;
+arr = malloc (sizeOf (struct CArray));
+arr->length = 5;
+arr->array = {2.0, 4.0, 6.0, 8.0, 10.0};
 ~~~
 
 or with Python's ```ctypes```:
 
 ~~~python
->>> from ctypes import Structure, c_int
->>> class Struct2( Structure ):
-...     _fields_ = [("s2fst", c_int), ("s2snd", c_int)]
+>>> from ctypes import Structure, c_int. c_double, POINTER, pointer
+>>> class CArray( Structure ):
+...     _fields_ = [("length", c_int), ("array", POINTER(c_double))]
 ...
->>> s = Struct2(1,2)
+>>> arr = pointer( CArray(5, (c_double * 5)(*map(lambda x:x*2,range(1,6)))) )
 ~~~
 
-On memory all of these examples should have the exact same representation. A pointer to either ```s``` can then be exchanged with the other and used in a ```foreign``` call.
-For a more elaborated usage example checkout [```Hasky```](https://github.com/pinselimo/Hasky/hasky/haskell/res/HaskyTuple.hs/). It uses ```Foreign.C.Structs``` to declare its storage functions for ```Haskell``` tuples.
+On memory all of these examples should have the exact same representation. A pointer to either ```arr``` can then be exchanged with the other and used in a ```foreign``` call.
+For a more elaborated usage example checkout [```hasky.types```](https://github.com/pinselimo/Hasky/hasky/types.py).
+
+### CList
+
+~~~haskell
+λ> import Foreign.Hasky.List (CList, newList, peekList, freeList)
+λ> list <- newList $ map (*2) [1..5]
+λ> peekList list
+[2.0,4.0,6.0,8.0,10.0]
+λ> freeList list
+~~~
+
+It builds a linked list and returns a pointer to its first element like:
+
+~~~C
+struct CList {
+    double data;
+    struct CList *next;
+};
+
+struct CList *list;
+// The code to build the list is intentionally omitted.
+~~~
+
+For a more elaborated usage example checkout [```hasky.types```](https://github.com/pinselimo/Hasky/hasky/types.py).
+
+### Tuples
+
+~~~haskell
+λ> import Foreign.Hasky.Tuples (CTuple4, newTuple4, peekTuple4, free)
+λ> tuple <- newTuple4 (63 :: Int, 'a', 42.0, 1 :: Word)
+λ> peekTuple4 tuple
+(63, 'a', 42.0, 1)
+λ> free tuple
+~~~
+
+There exist also ```CTuple2``` and ```CTuple3``` for tuples with less fields. The ```CTuple*``` names are type synonyms for pointers to structs of [```C-structs```](https://github.com/pinselimo/cstructs-in-haskell). The above code is de facto equivalent to the following C code:
+
+~~~C
+struct CTuple4 {
+    int a;
+    char b;
+    double c;
+    unsigned int d;
+};
+
+struct CTuple4 *tuple;
+tuple = malloc (sizeOf (CTuple4));
+tuple->a = 63;
+tuple->b = 'a';
+tuple->c = 42.0;
+tuple->d = 1;
+~~~
+
+For a more elaborated usage example checkout [```hasky.types```](https://github.com/pinselimo/Hasky/hasky/types.py).
+
+### Strings
+
+The ```Hasky``` ```CWString``` is actually a pointer to a ```CWString``` of ```Foreign.C.String```.
+
+~~~haskell
+λ> import Foreign.Hasky.String (CWString, newCWString, peekCWString, freeCWString)
+λ> string <- newCWString "Why the hell would Hasky need its own string type?"
+λ> peekCWString string
+"Why the hell would Hasky need its own string type?"
+λ> freeCWString string
+~~~
+
+The reason for the ```CWString``` type to exist is found in its heritage from a the Python module [```Hasky```](https://github.com/pinselimo/Hasky).
+Unfortunately Python's own ```ctypes``` makes some strange choices when it comes to wrapping foreign data.
+One of the is, that a foreign pointer to a ```c_wchar``` is immediately converted to a proper Python ```str```. This makes it impossible to free the pointer because one cannot access it.
+A pointer to a pointer is however left alone and just introduces minor wrapping. It can be used in Python as follows:
+
+~~~python
+>>> from ctypes import POINTER, pointer, c_wchar_p
+>>> CWString = POINTER( c_wchar_p )
+>>> string = pointer( c_wchar_p("This is why Hasky needs this boiler plate") )
+~~~
 
 ## Testing
 
-[![Build](https://img.shields.io/travis/pinselimo/cstructs-in-haskell.svg)](https://travis-ci.org/pinselimo/cstructs-in-haskell)
-
-Identity properties are tested with QuickCheck to ensure that peek and poke are reversible. The result of ```sizeOf``` is dependent on the order of types. Its correctness can only be tested with HUnit. The ```alignment``` function is trivial and only tested implicitly through ```sizeOf```.
-Imports from C are tested in ```CTest.hs``` and form together with the identity tests the guarantee that also exports to C are consistent.
+Identity properties are tested with QuickCheck to ensure that peek and poke are reversible. Imports from C are tested in ```CTest.hs``` and form together with the identity tests the guarantee that also exports to C are consistent.
 All tests are performed for all available GHC versions through [haskell-ci](https://github.com/haskell-CI/haskell-ci) to ensure maximum compatibility.
 
-## Contributing
-
-Currently only structs with up to four fields are supported. If your use case demands more, feel free to contribute or raise an issue on GitHub. Due to the individuality of the ```sizeOf``` function, an implementation in Template Haskell currently doesn't seem feasible. Thus, instances have to be written one by one.
+Further testing is done in the [```Hasky```](https://github.com/pinselimo/Hasky) packages where correct interfacing with Python is ensured.
 
 ## License
 
