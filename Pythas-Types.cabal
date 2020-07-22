@@ -1,13 +1,13 @@
-Name: Hasky-Types
+Name: Pythas-Types
 Version: 0.1.0.1
 Cabal-Version: >= 1.10
 License: MIT
 License-file: LICENSE
 Author: Simon Plakolb
-Homepage: https://github.com/pinselimo/Hasky-Types
+Homepage: https://github.com/pinselimo/Pythas-Types
 Synopsis: Haskell types for easy FFI with nested data.
 Description:
-    The types included in HaskyTypes make it easy to use nested data in an FFI context. Its inteded use is for the Python library Hasky, but the types can be useful in many languages.
+    The types included in PythasTypes make it easy to use nested data in an FFI context. Its inteded use is for the Python library Pythas, but the types can be useful in many languages.
     Lists can be packed inside an Array (which contains its length) or a linked list called List.
     Tuples with up to four fields can be packed into a C struct provided by Foreign.C.Structs.
     And finally a String type is provided storing a pointer to a string of wchars. This is necessary to realize freeing capability for C strings in Python.
@@ -21,15 +21,15 @@ Tested-With: GHC==8.10.1, GHC==8.8.3, GHC==8.6.5, GHC==8.4.4, GHC==8.2.2, GHC==8
 
 Source-Repository   head
     type:     git
-    location: https://github.com/pinselimo/Hasky-Types
+    location: https://github.com/pinselimo/Pythas-Types
 
 Library
     Default-Language: Haskell2010
     Exposed-Modules:
-        Foreign.Hasky.Array
-        Foreign.Hasky.List
-        Foreign.Hasky.String
-        Foreign.Hasky.Tuples
+        Foreign.Pythas.Array
+        Foreign.Pythas.List
+        Foreign.Pythas.String
+        Foreign.Pythas.Tuples
     hs-source-dirs: src
     Build-Depends:  base        >= 4.0 && < 5.0,
                     C-structs   >= 0.1 && < 0.2
@@ -46,7 +46,7 @@ Test-Suite unit-tests
     includes: c_test.h
     c-sources: test/libs/c_test.c
     build-depends:
-        Hasky-Types,
+        Pythas-Types,
         base         >= 4.0 && < 5.0,
         C-structs    >= 0.1 && < 0.2,
         HUnit        >= 1.2 && < 1.7,
