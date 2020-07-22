@@ -41,42 +41,60 @@ struct CArrayFloat *arrayFloat (void) {
     }
     return a;
 }
-/*
-struct CListDouble *listDouble (void) {
-    struct CListDouble *init;
-    init = malloc (sizeof (struct CListDouble));
 
+/*
+ * Hasky's linked lists do not have to be allocated in a single space.
+ * In fact Hasky-Types itself allocates memory for each element individually.
+ * However, if the C equivalents are build with individual allocation per element,
+ * on Travis-CI cabal fails with:
+ *
+ *            $ cabal: failed to create OS thread: Cannot allocate memory
+ *
+ * This issue is fixed when allocating the list array like, which is sufficient for
+ * the CI tests.
+ */
+
+struct CListDouble *listDouble (void) {
     int length = 63;
+    struct CListDouble *head;
+    head = malloc (length * sizeof (struct CListDouble));
+
+    // Create array with fibs
     double array[length];
     array[0] = 1.0;
     array[1] = 2.0;
     for (int i = 2; i < length; i++) {
         array[i] = array[i-1] + array[i-2];
     }
-    struct CListDouble *elem = init;
+
+    // Build linked list with data
+    struct CListDouble *elem = head;
     elem->value = array[0];
-    for (int i = 1; i < 63; i++) {
-        elem->next = malloc (sizeof (struct CListDouble));
+    for (int i = 1; i < length; i++) {
+        elem->next = (struct CListDouble *) head+i;
         elem = elem->next;
         elem->value = array[i];
     }
-    return init;
+    elem->next = NULL;
+    return head;
 }
-*/
-struct CListInt *listInt (void) {
-    struct CListInt *init;
-    init = (struct CListInt *) malloc (sizeof (struct CListInt));
 
-    struct CListInt *elem = init;
+struct CListInt *listInt (void) {
+    int length = 42;
+    struct CListInt *head;
+    head = malloc (length * sizeof (struct CListInt));
+
+    struct CListInt *elem = head;
     elem->value = 0;
-    for (int i = 1; i < 42; i++) {
-        elem->next = (struct CListInt *) malloc (sizeof (struct CListInt));
+    for (int i = 1; i < length; i++) {
+        elem->next = (struct CListInt *) head+i;
         elem = elem->next;
         elem->value = i;
     }
-    return init;
+    elem->next = NULL;
+    return head;
 }
-/*
+
 struct CListFloat *listFloat (void) {
     struct CListFloat *init;
     init = malloc (sizeof (struct CListFloat));
@@ -90,4 +108,4 @@ struct CListFloat *listFloat (void) {
     }
     return init;
 }
-*/
+
