@@ -43,9 +43,7 @@ struct CArrayFloat *arrayFloat (void) {
 }
 
 struct CListDouble *listDouble (void) {
-    struct CListDouble *init;
-    init = malloc (sizeof (struct CListDouble));
-
+    // Build array with fibs
     int length = 63;
     double array[length];
     array[0] = 1.0;
@@ -53,41 +51,50 @@ struct CListDouble *listDouble (void) {
     for (int i = 2; i < length; i++) {
         array[i] = array[i-1] + array[i-2];
     }
-    struct CListDouble *elem = init;
+
+    // Build list filled with values of array
+    struct CListDouble *head;
+    head = malloc (sizeof (struct CListDouble));
+
+    struct CListDouble *elem = head;
     elem->value = array[0];
-    for (int i = 1; i < 63; i++) {
+    for (int i = 1; i < length; i++) {
         elem->next = malloc (sizeof (struct CListDouble));
         elem = elem->next;
         elem->value = array[i];
     }
-    return init;
+    elem->next = NULL;
+
+    return head;
 }
 
 struct CListInt *listInt (void) {
-    struct CListInt *init;
-    init = malloc (sizeof (struct CListInt));
+    struct CListInt *head;
+    head = malloc (sizeof (struct CListInt));
 
-    struct CListInt *elem = init;
+    struct CListInt *elem = head;
     elem->value = 0;
     for (int i = 1; i < 42; i++) {
         elem->next = malloc (sizeof (struct CListInt));
         elem = elem->next;
         elem->value = i;
     }
-    return init;
+    elem->next = NULL;
+    return head;
 }
 
 struct CListFloat *listFloat (void) {
-    struct CListFloat *init;
-    init = malloc (sizeof (struct CListFloat));
+    struct CListFloat *head;
+    head = malloc (sizeof (struct CListFloat));
 
-    struct CListFloat *elem = init;
+    struct CListFloat *elem = head;
     elem->value = 0.0f;
     for (int i = 1; i < 21; i++) {
         elem->next = malloc (sizeof (struct CListFloat));
         elem = elem->next;
         elem->value = (float) i/2.0;
     }
-    return init;
+    elem->next = NULL;
+    return head;
 }
 
