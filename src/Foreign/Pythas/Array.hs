@@ -1,16 +1,16 @@
 {- |
-Module          : Foreign.Hasky.Array
-Description     : Array type for Python's interfacing library Hasky
+Module          : Foreign.Pythas.Array
+Description     : Array type for Python's interfacing library Pythas
 Copyright       : (c) Simon Plakolb, 2020
 License         : LGPLv3
 Maintainer      : s.plakolb@gmail.com
 Stability       : beta
 
-    The 'Foreign.Hasky.Array' 'CArray' type is the standard way of wrapping Haskell lists in Hasky.
+    The 'Foreign.Pythas.Array' 'CArray' type is the standard way of wrapping Haskell lists in Pythas.
     Lacking a terminator element for many 'Storable' types, array reading has to be constrained by the array length. To communicate the length of an array across language borders it needs to be packed into a struct containing said length. This enables 'peekArray' to safely read the list contents back from a 'CArray'.
-    Be aware that while 'String's are '[Char]'s, they are treated seperately in Hasky. See: 'Foreign.Hasky.String'.
+    Be aware that while 'String's are '[Char]'s, they are treated seperately in Pythas. See: 'Foreign.Pythas.String'.
  -}
-module Foreign.Hasky.Array (CArray, newArray, peekArray, freeArray) where
+module Foreign.Pythas.Array (CArray, newArray, peekArray, freeArray) where
 
 import Foreign.Ptr (Ptr, nullPtr)
 import Foreign.C.Types (CInt)

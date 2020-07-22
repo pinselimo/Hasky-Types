@@ -1,14 +1,14 @@
 {- |
-Module          : Foreign.Hasky.List
-Description     : Linked List type for Python's interfacing library Hasky
+Module          : Foreign.Pythas.List
+Description     : Linked List type for Python's interfacing library Pythas
 Copyright       : (c) Simon Plakolb, 2020
 License         : LGPLv3
 Maintainer      : s.plakolb'gmail.com
 Stability       : beta
 
-    Legacy type and functions for linked lists as interface for Haskell lists to Python sequences. The relevant conversion and parsin functions in the Python part of Hasky should still be able to handle a 'CList'. It is recommended to wrap lists as 'Foreign.Hasky.Array'. Use linked lists only if you have a good reason to do so.
+    Legacy type and functions for linked lists as interface for Haskell lists to Python sequences. The relevant conversion and parsin functions in the Python part of Pythas should still be able to handle a 'CList'. It is recommended to wrap lists as 'Foreign.Pythas.Array'. Use linked lists only if you have a good reason to do so.
  -}
-module Foreign.Hasky.List (CList, newList, peekList, freeList) where
+module Foreign.Pythas.List (CList, newList, peekList, freeList) where
 
 import Foreign.Ptr
 import Foreign.Storable (Storable, peek, poke, sizeOf, alignment)

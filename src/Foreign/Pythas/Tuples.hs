@@ -1,6 +1,6 @@
 {- |
-Module          : Foreign.Hasky.Tuples
-Description     : Tuple types for Python's interfacing library Hasky
+Module          : Foreign.Pythas.Tuples
+Description     : Tuple types for Python's interfacing library Pythas
 Copyright       : (c) Simon Plakolb, 2020
 License         : LGPLv3
 Maintainer      : s.plakolb@gmail.com
@@ -9,11 +9,11 @@ Stability       : beta
     Tuple wrapper types and converting functions. Implementation strongly relies on 'Foreign.C.Structs'.
     The size of tuples that can be created is directly dependent on the size of structs available there.
  -}
-module Foreign.Hasky.Tuples (
+module Foreign.Pythas.Tuples (
     CTuple2, newTuple2, peekTuple2,
     CTuple3, newTuple3, peekTuple3,
     CTuple4, newTuple4, peekTuple4,
-    -- Re-Export of free and its aliases to match API of other Hasky-Types
+    -- Re-Export of free and its aliases to match API of other Pythas-Types
     free, freeTuple2, freeTuple3, freeTuple4
 ) where
 
@@ -36,7 +36,7 @@ peekTuple2 ct = do
     s <- peek ct
     return (s2fst s, s2snd s)
 
--- | Alias for 'free' to match @Hasky-Types@' API.
+-- | Alias for 'free' to match @Pythas-Types@' API.
 freeTuple2 = free
 
 -- | Type synonym for a pointer to a struct with three fields.
@@ -52,7 +52,7 @@ peekTuple3 ct = do
     s <- peek ct
     return (s3fst s, s3snd s, s3trd s)
 
--- | Alias for 'free' to match @Hasky-Types@' API.
+-- | Alias for 'free' to match @Pythas-Types@' API.
 freeTuple3 = free
 
 -- | Type synonym for a pointer to a struct with four fields.
@@ -68,6 +68,6 @@ peekTuple4 ct = do
     s <- peek ct
     return (s4fst s, s4snd s, s4trd s, s4fth s)
 
--- | Alias for 'free' to match @Hasky-Types@' API.
+-- | Alias for 'free' to match @Pythas-Types@' API.
 freeTuple4 = free
 
