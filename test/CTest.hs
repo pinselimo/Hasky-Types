@@ -11,10 +11,6 @@ import Foreign.Marshal.Alloc (free)
 import Foreign.Hasky.Array
 import Foreign.Hasky.List
 
-check list action = do
-    list' <- action
-    list @?= list'
-
 foreign import ccall "arrayDouble" arrayDouble :: CArray CDouble
 foreign import ccall "arrayInt" arrayInt :: CArray CInt
 foreign import ccall "arrayFloat" arrayFloat :: CArray CFloat
@@ -22,7 +18,6 @@ foreign import ccall "arrayFloat" arrayFloat :: CArray CFloat
 foreign import ccall "listDouble" listDouble :: CList CDouble
 foreign import ccall "listInt" listInt :: CList CInt
 foreign import ccall "listFloat" listFloat :: CList CFloat
-
 
 fibs = 1.0 : 2.0 : zipWith (+) fibs (tail fibs) :: [CDouble]
 doubles = take 63 fibs :: [CDouble]
@@ -42,10 +37,10 @@ pfl list = do
     return l
 
 tests = testGroup "Foreign Imports" [
-        testCase "arrayDouble" $ check doubles (pfa arrayDouble)
-      , testCase "arrayInt"    $ check ints    (pfa arrayInt)
-      , testCase "arrayFloat"  $ check floats  (pfa arrayFloat)
-      , testCase "listDouble"  $ check doubles (pfl listDouble)
-      , testCase "listInt"     $ check ints    (pfl listInt)
-      , testCase "listFloat"   $ check floats  (pfl listFloat)
+        testCase "arrayDouble" $ (pfa arrayDouble) >>= (@?= doubles)
+      , testCase "arrayInt"    $ (pfa arrayInt)    >>= (@?= ints)
+      , testCase "arrayFloat"  $ (pfa arrayFloat)  >>= (@?= floats)
+      , testCase "listDouble"  $ (pfl listDouble)  >>= (@?= doubles)
+      , testCase "listInt"     $ (pfl listInt)     >>= (@?= ints)
+      , testCase "listFloat"   $ (pfl listFloat)   >>= (@?= floats)
    ]
