@@ -4,15 +4,15 @@ module CTest where
 import Test.Tasty (testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
 
-import System.IO.Unsafe (unsafePerformIO)
-
 import Foreign.C.Types
 import Foreign.Ptr
 import Foreign.Storable
 import Foreign.Hasky.Array
 import Foreign.Hasky.List
 
-quick = unsafePerformIO
+check list action = do
+    list' <- action
+    list @?= list'
 
 foreign import ccall "arrayDouble" arrayDouble :: CArray CDouble
 foreign import ccall "arrayInt" arrayInt :: CArray CInt
@@ -40,10 +40,10 @@ pfl list = do
     return l
 
 tests = testGroup "Foreign Imports" [
-        testCase "arrayDouble" $ (quick $ pfa arrayDouble) @?= doubles
-      , testCase "arrayInt"    $ (quick $ pfa arrayInt)    @?= ints
-      , testCase "arrayFloat"  $ (quick $ pfa arrayFloat)  @?= floats
+        testCase "arrayDouble" $ check doubles (pfa arrayDouble)
+      , testCase "arrayInt"    $ check ints    (pfa arrayInt)
+      , testCase "arrayFloat"  $ check floats  (pfa arrayFloat)
 --      , testCase "listDouble"  $ (quick $ pfl listDouble)   @?= doubles
-      , testCase "listInt"     $ (quick $ pfl listInt)      @?= ints
+      , testCase "listInt"     $ check ints    (pfl listInt)
 --      , testCase "listFloat"   $ (quick $ pfl listFloat )   @?= floats
    ]
