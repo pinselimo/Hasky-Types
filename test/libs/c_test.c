@@ -42,25 +42,9 @@ struct CArrayFloat *arrayFloat (void) {
     return a;
 }
 
-/*
- * Hasky's linked lists do not have to be allocated in a single space.
- * In fact Hasky-Types itself allocates memory for each element individually.
- * However, if the C equivalents are build with individual allocation per element,
- * on Travis-CI cabal fails with:
- *
- *            $ cabal: failed to create OS thread: Cannot allocate memory
- *
- * This issue is fixed when allocating the list array like, which is sufficient for
- * the CI tests.
- * To check distributed element linked lists uncomment the specified tests in test/CTest.hs
- */
-
-struct CListDouble *listDoubleTravis (void) {
+struct CListDouble *listDouble (void) {
+    // Build array with fibs
     int length = 63;
-    struct CListDouble *head;
-    head = malloc (length * sizeof (struct CListDouble));
-
-    // Create array with fibs
     double array[length];
     array[0] = 1.0;
     array[1] = 2.0;
@@ -68,66 +52,10 @@ struct CListDouble *listDoubleTravis (void) {
         array[i] = array[i-1] + array[i-2];
     }
 
-    // Build linked list with data
-    struct CListDouble *elem = head;
-    elem->value = array[0];
-    for (int i = 1; i < length; i++) {
-        elem->next = (struct CListDouble *) head+i;
-        elem = elem->next;
-        elem->value = array[i];
-    }
-    elem->next = NULL;
-    return head;
-}
-
-struct CListInt *listIntTravis (void) {
-    int length = 42;
-    struct CListInt *head;
-    head = malloc (length * sizeof (struct CListInt));
-
-    struct CListInt *elem = head;
-    elem->value = 0;
-    for (int i = 1; i < length; i++) {
-        elem->next = (struct CListInt *) head+i;
-        elem = elem->next;
-        elem->value = i;
-    }
-    elem->next = NULL;
-    return head;
-}
-
-struct CListFloat *listFloatTravis (void) {
-    int length = 21;
-    struct CListFloat *head;
-    head = malloc (length * sizeof (struct CListFloat));
-
-    struct CListFloat *elem = head;
-    elem->value = 0.0f;
-    for (int i = 1; i < 21; i++) {
-        elem->next = (struct CListFloat *) head+i;
-        elem = elem->next;
-        elem->value = (float) i/2.0;
-    }
-    elem->next = NULL;
-    return head;
-}
-
-/* Below are conventional linked lists which are tested on a
- * regular basis but ommitted on github due to cabal failing
- * on the on Travis-CI. (See above)
- */
-
-struct CListDouble *listDouble (void) {
+    // Build list filled with values of array
     struct CListDouble *head;
     head = malloc (sizeof (struct CListDouble));
 
-    int length = 63;
-    double array[length];
-    array[0] = 1.0;
-    array[1] = 2.0;
-    for (int i = 2; i < length; i++) {
-        array[i] = array[i-1] + array[i-2];
-    }
     struct CListDouble *elem = head;
     elem->value = array[0];
     for (int i = 1; i < length; i++) {

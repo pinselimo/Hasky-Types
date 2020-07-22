@@ -35,10 +35,6 @@ struct CArrayDouble *arrayDouble(void);
 struct CArrayInt    *arrayInt(void);
 struct CArrayFloat  *arrayFloat(void);
 
-struct CListDouble *listDoubleTravis(void);
-struct CListInt    *listIntTravis(void);
-struct CListFloat  *listFloatTravis(void);
-
 struct CListDouble *listDouble(void);
 struct CListInt    *listInt(void);
 struct CListFloat  *listFloat(void);
