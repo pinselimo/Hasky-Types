@@ -8,8 +8,8 @@ import Foreign.C.Types
 import Foreign.Ptr
 import Foreign.Storable
 import Foreign.Marshal.Alloc (free)
-import Foreign.Hasky.Array
-import Foreign.Hasky.List
+import Foreign.Pythas.Array
+import Foreign.Pythas.List
 
 foreign import ccall "arrayDouble" arrayDouble :: CArray CDouble
 foreign import ccall "arrayInt" arrayInt :: CArray CInt

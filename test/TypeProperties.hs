@@ -7,8 +7,8 @@ import Test.QuickCheck.Monadic (monadicIO, run, assert)
 import Foreign.C.Types (CChar, CInt, CDouble, CLLong)
 import Foreign.Storable (Storable)
 
-import Foreign.Hasky.Array
-import Foreign.Hasky.List
+import Foreign.Pythas.Array
+import Foreign.Pythas.List
 
 tests = testGroup "Properties" [test_idArray, test_idList]
 
