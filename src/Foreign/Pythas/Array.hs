@@ -31,9 +31,7 @@ newArray xs = ARR.newArray xs >>= new . Struct2 (fromIntegral $ length xs)
 -- | (Re-)Creates a Haskell list out of a 'CArray'. Memory is not released within this function. If it had been allocated within Haskell it needs to be freed with 'freeArray'.
 peekArray :: (Storable a) => CArray a -> IO [a]
 peekArray ap = do
-    array <- peek ap
-    let l = s2fst array
-    let a = s2snd array
+    Struct2 l a <- peek ap
     if a == nullPtr
       then return []
       else ARR.peekArray (fromIntegral l) a
@@ -41,7 +39,7 @@ peekArray ap = do
 -- | Frees all memory allocated for a 'CArray' by 'newArray'.
 freeArray :: (Storable a) => CArray a -> IO ()
 freeArray ap = do
-    array <- peek ap
-    free $ s2snd array
+    Struct2 _ a <- peek ap
+    free a
     free ap
 

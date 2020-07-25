@@ -43,8 +43,7 @@ peekList lp
     | lp == nullPtr = return []
     | otherwise     = do
                 le <- peek lp
-                let x = s2fst $ getElem le
-                let n = s2snd $ getElem le
+                let Struct2 x n = getElem le
                 li <- peekList n
                 return (x:li)
 
@@ -54,7 +53,7 @@ freeList lp
     | lp == nullPtr = free lp
     | otherwise     = do
           le <- peek lp
-          let n = s2snd $ getElem le
+          let Struct2 _ n = getElem le
           free lp
           freeList n
 
