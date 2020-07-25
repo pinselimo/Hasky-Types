@@ -1,3 +1,4 @@
+{-# LANGUAGE TemplateHaskell #-}
 {- |
 Module          : Foreign.Pythas.Tuples
 Description     : Tuple types for Python's interfacing library Pythas
@@ -23,8 +24,10 @@ import Foreign.Marshal.Alloc (free)
 import Foreign.Marshal.Utils (new)
 import Foreign.C.Structs (Struct2(..), Struct3(..), Struct4(..))
 
+import Foreign.Pythas.Templates (typT)
+
 -- | Type synonym for a pointer to a struct with two fields.
-type CTuple2 a b = Ptr (Struct2 a b)
+typT 2
 
 -- | Creates a 'CTuple2' out of a tuple with two fields. This function allocates space which must be explicitly freed after usage with 'free'.
 newTuple2 :: (Storable a, Storable b) => (a, b) -> IO (CTuple2 a b)
@@ -40,7 +43,7 @@ peekTuple2 ct = do
 freeTuple2 = free
 
 -- | Type synonym for a pointer to a struct with three fields.
-type CTuple3 a b c = Ptr (Struct3 a b c)
+typT 3
 
 -- | Creates a 'CTuple3' out of a tuple with three fields. This function allocates space which must be explicitly freed after usage with 'free'.
 newTuple3 :: (Storable a, Storable b, Storable c) => (a, b, c) -> IO (CTuple3 a b c)
