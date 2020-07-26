@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TemplateHaskell, CPP #-}
 {- |
 Module          : Foreign.Pythas.Templates
 Description     : Tuple types for Python's interfacing library Pythas
@@ -55,4 +55,9 @@ peekTupleT n = FunD (nName "peekTuple" n) [clause]
           body = DoE [ BindS (strP) (AppE (VarE 'peek) (VarE ct))
                      , NoBindS (AppE (VarE 'return) (TupE fields))
                      ]
-                     where fields = map VarE vs
+                     where
+#if __GLASGOW_HASKELL__ < 810
+                           fields = map VarE vs
+#else
+                           fields = map (Just . VarE) vs
+#endif
