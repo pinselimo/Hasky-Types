@@ -9,8 +9,9 @@ import Foreign.Storable (Storable)
 
 import Foreign.Pythas.Array
 import Foreign.Pythas.List
+import Foreign.Pythas.Tuples
 
-tests = testGroup "Properties" [test_idArray, test_idList]
+tests = testGroup "Properties" [test_idArray, test_idList, test_idTuple]
 
 test_idArray = testGroup "Identity Array" [
       testProperty "Double"   (prop_idArray :: [Double]  -> Property)
@@ -53,4 +54,25 @@ prop_idList :: (Storable a, Eq a) => [a] -> Property
 prop_idList list = monadicIO $ do
     list' <- run (identityList list)
     assert (list' == list)
+
+test_idTuple = testGroup "Identity Tuple2" [
+      testProperty "Double"   (prop_idTuple :: (Double, Double, Double)    -> Property)
+    , testProperty "Int"      (prop_idTuple :: (Int, Int, Int)             -> Property)
+    , testProperty "Char"     (prop_idTuple :: (Char, Char, Char)          -> Property)
+    , testProperty "CDouble"  (prop_idTuple :: (CDouble, CDouble, CDouble) -> Property)
+    , testProperty "CInt"     (prop_idTuple :: (CInt, CInt, CInt)          -> Property)
+    , testProperty "CChar"    (prop_idTuple :: (CChar, CChar, CChar)       -> Property)
+    , testProperty "CLLong"   (prop_idTuple :: (CLLong, CLLong, CLLong)    -> Property)
+    ]
+
+identityTuple tuple = do
+    ptr_tuple <- newTuple3 tuple
+    tuple'    <- peekTuple3 ptr_tuple
+    free ptr_tuple
+    return tuple'
+
+prop_idTuple :: (Storable a, Eq a) => (a,a,a) -> Property
+prop_idTuple tuple = monadicIO $ do
+    tuple' <- run (identityTuple tuple)
+    assert (tuple' == tuple)
 

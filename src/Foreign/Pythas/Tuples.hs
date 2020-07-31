@@ -1,3 +1,4 @@
+{-# LANGUAGE TemplateHaskell #-}
 {- |
 Module          : Foreign.Pythas.Tuples
 Description     : Tuple types for Python's interfacing library Pythas
@@ -23,51 +24,8 @@ import Foreign.Marshal.Alloc (free)
 import Foreign.Marshal.Utils (new)
 import Foreign.C.Structs (Struct2(..), Struct3(..), Struct4(..))
 
--- | Type synonym for a pointer to a struct with two fields.
-type CTuple2 a b = Ptr (Struct2 a b)
+import Foreign.Pythas.Templates (ctupleT)
 
--- | Creates a 'CTuple2' out of a tuple with two fields. This function allocates space which must be explicitly freed after usage with 'free'.
-newTuple2 :: (Storable a, Storable b) => (a, b) -> IO (CTuple2 a b)
-newTuple2 (x, y) = new $ Struct2 x y
-
--- | (Re-)Creates a common Haskell tuple out of a 'CTuple2'. Memory is not released within this function. If it has been allocated with 'newTuple2' it needs to be freed explicitly with 'free'.
-peekTuple2 :: (Storable a, Storable b) => CTuple2 a b -> IO (a,b)
-peekTuple2 ct = do
-    s <- peek ct
-    return (s2fst s, s2snd s)
-
--- | Alias for 'free' to match @Pythas-Types@' API.
-freeTuple2 = free
-
--- | Type synonym for a pointer to a struct with three fields.
-type CTuple3 a b c = Ptr (Struct3 a b c)
-
--- | Creates a 'CTuple3' out of a tuple with three fields. This function allocates space which must be explicitly freed after usage with 'free'.
-newTuple3 :: (Storable a, Storable b, Storable c) => (a, b, c) -> IO (CTuple3 a b c)
-newTuple3 (x, y, z) = new $ Struct3 x y z
-
--- | (Re-)Creates a common Haskell tuple out of a 'CTuple3'. Memory is not released within this function. If it has been allocated with 'newTuple3' it needs to be freed explicitly with 'free'.
-peekTuple3 :: (Storable a, Storable b, Storable c) => CTuple3 a b c -> IO (a,b,c)
-peekTuple3 ct = do
-    s <- peek ct
-    return (s3fst s, s3snd s, s3trd s)
-
--- | Alias for 'free' to match @Pythas-Types@' API.
-freeTuple3 = free
-
--- | Type synonym for a pointer to a struct with four fields.
-type CTuple4 a b c d = Ptr (Struct4 a b c d)
-
--- | Creates a 'CTuple4' out of a tuple with four fields. This function allocates space which must be explicitly freed after usage with 'free'.
-newTuple4 :: (Storable a, Storable b, Storable c, Storable d) => (a, b, c, d) -> IO (CTuple4 a b c d)
-newTuple4 (w, x, y, z) = new $ Struct4 w x y z
-
--- | (Re-)Creates a common Haskell tuple out of a 'CTuple4'. Memory is not released within this function. If it has been allocated with 'newTuple4' it needs to be freed explicitly with 'free'.
-peekTuple4 :: (Storable a, Storable b, Storable c, Storable d) => CTuple4 a b c d -> IO (a,b,c,d)
-peekTuple4 ct = do
-    s <- peek ct
-    return (s4fst s, s4snd s, s4trd s, s4fth s)
-
--- | Alias for 'free' to match @Pythas-Types@' API.
-freeTuple4 = free
-
+ctupleT 2
+ctupleT 3
+ctupleT 4
