@@ -30,23 +30,23 @@ ctupleT n  = do
         pt = peekTupleT n
     return $ [tt,nt,pt] ++ ft
 
-ctuple n = nName "CTuple" n
-struct n = nName "Struct" n
-nName s n = mkName $ s ++ show n
-vars   n = take n $ map (mkName . (:[])) ['a'..'z']
-
+-- Template functions
+typT :: Int -> Dec
 typT n = TySynD (ctuple n) (map PlainTV vs) typ
     where typ = AppT (ConT ''Ptr) $ foldl AppT (ConT $ struct n) (map VarT vs)
           vs  = vars n
 
+freeT :: Int -> DecsQ
 freeT n = [d| $(name) = free |]
     where name = varP $ nName "freeTuple" n
 
+newTupleT :: Int -> Dec
 newTupleT n = FunD (nName "newTuple" n) [clause]
     where clause = Clause [TupP $ map VarP vs] (NormalB body) []
           body = AppE (VarE 'new) (foldl AppE (ConE $ struct n) $ map VarE vs)
           vs = vars n
 
+peekTupleT :: Int -> Dec
 peekTupleT n = FunD (nName "peekTuple" n) [clause]
     where clause = Clause [VarP ct] (NormalB body) []
           ct = mkName "ct"
@@ -61,3 +61,10 @@ peekTupleT n = FunD (nName "peekTuple" n) [clause]
 #else
                            fields = map (Just . VarE) vs
 #endif
+
+-- Utility functions
+ctuple n = nName "CTuple" n
+struct n = nName "Struct" n
+nName s n = mkName $ s ++ show n
+vars   n = take n $ map (mkName . (:[])) ['a'..'z']
+
