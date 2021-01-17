@@ -33,7 +33,7 @@ Library
         Foreign.Pythas.Templates
     hs-source-dirs: src
     Build-Depends:  base        >= 4.0 && < 5.0,
-                    C-structs   >= 0.1 && < 0.2,
+                    C-structs   >= 0.2 && < 0.3,
                     template-haskell >=2.2 && < 2.17
 
 Test-Suite unit-tests
@@ -50,7 +50,7 @@ Test-Suite unit-tests
     build-depends:
         Pythas-Types,
         base         >= 4.0 && < 5.0,
-        C-structs    >= 0.1 && < 0.2,
+        C-structs    >= 0.2 && < 0.3,
         HUnit        >= 1.2 && < 1.7,
         QuickCheck   >= 2.7 && < 2.15,
         tasty        >= 1.0 && < 1.4,
