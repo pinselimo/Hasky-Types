@@ -65,6 +65,6 @@ Test-Suite doctest
     build-depends:
         base        >= 4.0 && < 5.0,
         doctest     >= 0.10 && < 0.18,
-        Glob        >= 0.8 && < 0.11
-        C-structs    >= 0.2 && < 0.3,
+        Glob        >= 0.8 && < 0.11,
+        C-structs    >= 0.2 && < 0.3
 
