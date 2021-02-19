@@ -126,7 +126,7 @@ A pointer to a pointer is however left alone and just introduces minor wrapping.
 ## Testing
 
 Identity properties are tested with QuickCheck to ensure that peek and poke are reversible. Imports from C are tested in ```test/CTest.hs``` and form together with the identity tests the guarantee that also exports to C are consistent.
-The QuickCheck tests are performed for all latest minor revisions of GHC versions >= 8.0 through [haskell-ci](https://github.com/haskell-CI/haskell-ci). More GHC versions will be added once the C-structs package is available through Hackage.
+The QuickCheck tests are performed for the latest minor revisions of GHC versions.
 
 Further testing is done in the [```Pythas```](https://github.com/pinselimo/Pythas) packages where correct interfacing with Python is ensured.
 
