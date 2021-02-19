@@ -1,5 +1,5 @@
 
-[![Build](https://img.shields.io/travis/pinselimo/Pythas-Types.svg)](https://travis-ci.org/pinselimo/Pythas-Types)
+[![Haskell CI](https://github.com/pinselimo/Pythas-Types/actions/workflows/haskell.yml/badge.svg)](https://github.com/pinselimo/Pythas-Types/actions/workflows/haskell.yml)
 
 # Pythas-Types
 
