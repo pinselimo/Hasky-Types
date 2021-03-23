@@ -27,9 +27,9 @@ type CWString = STR.CWString
 
 -- | Creates the usual NIL terminated 'Foreign.C.String' @CWString@ from a Haskell @[Char]@ and wraps it in a 'Ptr'. This allocates memory twice. The new Pythas 'CWString' has to be explicitly freed with 'freeCWString', 'free' will not free the entiry allocated space!
 newCWString :: String -> IO CWString
-newCWString s = STR.newCWString s
+newCWString = STR.newCWString
 
 -- | (Re-)Creates a Haskell @[Char]@ from a Pythas 'CWString'. Memory is not released within this function.
 peekCWString :: CWString -> IO String
-peekCWString cws = STR.peekCWString
+peekCWString = STR.peekCWString
 
