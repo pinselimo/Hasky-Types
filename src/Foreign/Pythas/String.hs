@@ -23,17 +23,13 @@ import Foreign.Ptr (Ptr)
 import Foreign.Storable (peek)
 
 -- | A Pythas 'CWString' is a pointer to a 'Foreign.C.String' @CWString@. It needs to be freed after use by 'freeCWString'.
-type CWString = Ptr STR.CWString
+type CWString = STR.CWString
 
 -- | Creates the usual NIL terminated 'Foreign.C.String' @CWString@ from a Haskell @[Char]@ and wraps it in a 'Ptr'. This allocates memory twice. The new Pythas 'CWString' has to be explicitly freed with 'freeCWString', 'free' will not free the entiry allocated space!
 newCWString :: String -> IO CWString
-newCWString s = STR.newCWString s >>= new
+newCWString s = STR.newCWString s
 
 -- | (Re-)Creates a Haskell @[Char]@ from a Pythas 'CWString'. Memory is not released within this function.
 peekCWString :: CWString -> IO String
-peekCWString cws = peek cws >>= STR.peekCWString
-
--- | Free a Pythas 'CWString' by first freeing the actual 'Foreign.C.String' @CWString@ and then the pointer wrapping it.
-freeCWString :: CWString -> IO ()
-freeCWString cws = peek cws >>= free >> free cws
+peekCWString cws = STR.peekCWString
 
