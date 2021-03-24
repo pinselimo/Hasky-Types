@@ -13,7 +13,7 @@ Stability       : beta
     For documentation on @CWString@s also refer to 'Foreign.C.String'.
  -}
 module Foreign.Pythas.String (
-    CWString, newCWString, peekCWString, freeCWString
+    CWString, newCWString, peekCWString
 ) where
 
 import qualified Foreign.C.String as STR
